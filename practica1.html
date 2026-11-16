@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Práctica 1</title>
+</head>
+<body>
+    <h1>Contador de visitas</h1>
+
+    <p id="resultado"></p>
+    <a href="index.html">Volver al inicio</a>
+
+    <script>
+        let visitas = 0;
+        const cookies = document.cookie.split("; ");
+
+        for (const cookie of cookies) {
+            if (cookie.startsWith("visitas=")) {
+                visitas = Number(cookie.split("=")[1]);
+            }
+        }
+
+        visitas++;
+
+        if (visitas > 10) {
+            visitas = 0;
+            document.cookie = "visitas=; max-age=0";
+        } else {
+            const caducidad = new Date();
+            caducidad.setMonth(caducidad.getMonth() + 1);
+
+            document.cookie = "visitas=" + visitas +
+                "; expires=" + caducidad.toUTCString();
+        }
+
+        document.getElementById("resultado").textContent =
+            "Número de visitas: " + visitas;
+    </script>
+</body>
+</html>

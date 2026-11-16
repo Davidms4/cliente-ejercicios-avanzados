@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicios 1 al 5</title>
+</head>
+<body>
+    <h1>Ejercicios 1 al 5</h1>
+
+    <h2>Ejercicio 1: guardar el nombre</h2>
+
+    <div id="datos">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre">
+        <button id="guardar">Guardar</button>
+    </div>
+
+    <p id="bienvenida"></p>
+    <p>Los ejercicios 2 al 5 se muestran en la consola.</p>
+    <a href="index.html">Volver al inicio</a>
+
+    <script type="module">
+        import { suma, resta, multiplica, divide } from "./calculadora.js";
+
+        // Ejercicio 1: guardar el nombre durante 7 días.
+        const datos = document.getElementById("datos");
+        const nombre = document.getElementById("nombre");
+        const bienvenida = document.getElementById("bienvenida");
+
+        function saludar(texto) {
+            datos.hidden = true;
+            bienvenida.textContent = "¡Bienvenido, " + texto + "!";
+        }
+
+        const cookies = document.cookie.split("; ");
+
+        for (const cookie of cookies) {
+            if (cookie.startsWith("nombreUsuario=")) {
+                const valor = cookie.split("=")[1];
+                saludar(decodeURIComponent(valor));
+            }
+        }
+
+        document.getElementById("guardar").addEventListener("click", function () {
+            const texto = nombre.value.trim();
+
+            if (texto !== "") {
+                document.cookie = "nombreUsuario=" + encodeURIComponent(texto) +
+                    "; max-age=" + (7 * 24 * 60 * 60);
+
+                saludar(texto);
+            }
+        });
+
+        // Ejercicio 2: capturar el error al dividir por cero.
+        try {
+            console.log("Ejercicio 2:", divide(10, 0));
+        } catch (error) {
+            console.log("Ejercicio 2:", error.message);
+        }
+
+        // Ejercicio 3: probar una promesa con then/catch y async/await.
+        function simulaProceso(exito) {
+            return new Promise(function (resolve, reject) {
+                if (exito) {
+                    resolve("Proceso exitoso");
+                } else {
+                    reject("Hubo un error");
+                }
+            });
+        }
+
+        simulaProceso(true)
+            .then(mensaje => console.log("Ejercicio 3 (then):", mensaje))
+            .catch(error => console.log("Ejercicio 3 (catch):", error));
+
+        simulaProceso(false)
+            .then(mensaje => console.log("Ejercicio 3 (then):", mensaje))
+            .catch(error => console.log("Ejercicio 3 (catch):", error));
+
+        async function probarProceso(exito) {
+            try {
+                const mensaje = await simulaProceso(exito);
+                console.log("Ejercicio 3 (await):", mensaje);
+            } catch (error) {
+                console.log("Ejercicio 3 (await):", error);
+            }
+        }
+
+        probarProceso(true);
+        probarProceso(false);
+
+        // Ejercicio 4: usar las funciones importadas.
+        console.log("Ejercicio 4 - Suma:", suma(8, 2));
+        console.log("Ejercicio 4 - Resta:", resta(8, 2));
+        console.log("Ejercicio 4 - Multiplicación:", multiplica(8, 2));
+        console.log("Ejercicio 4 - División:", divide(8, 2));
+
+        // Ejercicio 5: encadenar las tres tareas.
+        function primeraTarea() {
+            return Promise.resolve(10);
+        }
+
+        function segundaTarea(valor) {
+            return Promise.resolve(valor * 2);
+        }
+
+        function terceraTarea(valor) {
+            return Promise.resolve(valor + 5);
+        }
+
+        primeraTarea()
+            .then(segundaTarea)
+            .then(terceraTarea)
+            .then(resultado => console.log("Ejercicio 5:", resultado));
+    </script>
+</body>
+</html>

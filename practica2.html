@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Práctica 2</title>
+</head>
+<body>
+    <h1>Temporizador</h1>
+
+    <p id="resultado">Esperando 5 segundos...</p>
+    <a href="index.html">Volver al inicio</a>
+
+    <script type="module">
+        import { temporizador } from "./temporizador.js";
+
+        const resultado = document.getElementById("resultado");
+
+        temporizador(5000)
+            .then(mensaje => resultado.textContent = mensaje)
+            .catch(error => resultado.textContent = error);
+    </script>
+</body>
+</html>
